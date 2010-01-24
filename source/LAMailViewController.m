@@ -16,9 +16,7 @@
 @synthesize statusMessage=_statusMessage;
 
 + (id) openNewMailViewController {
-    
     LAMailViewController *me = [[LAMailViewController alloc] initWithWindowNibName:@"MailView"];
-    
     return [me autorelease];
 }
 
@@ -85,7 +83,6 @@
     [self setStatusMessage:[NSString stringWithFormat:format, folder]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
-        
 		if(![self.folders count]) {
 			[self getFoldersList];
 		}
@@ -210,29 +207,10 @@
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-    
-    if (aTableView == foldersList) {
-        return [_folders count];
-    }
-    
 	return [_messages count];
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
-	
-    if (aTableView == foldersList) {
-        // this will be taken out eventually.  But I just can't help myself.
-        NSString *folderName = [_folders objectAtIndex:rowIndex];
-        
-        /*
-        if ([folderName hasPrefix:@"INBOX."]) {
-            folderName = [folderName substringFromIndex:6];
-        }
-        */
-        
-        return [LAPrefs boolForKey:@"chocklock"] ? [folderName uppercaseString] : folderName;
-    }
-    
     LBMessage *msg = [_messages objectAtIndex:rowIndex];
     
     NSString *identifier = [aTableColumn identifier];
