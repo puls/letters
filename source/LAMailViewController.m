@@ -192,14 +192,24 @@
             NSString *message = nil;
             
             if ([msg messageDownloaded]) {
-                message = [msg htmlBody];
+                message = NSLocalizedString(@"Loading message…", @"Loading message…");
+                [msg retain];
+                [[NSOperationQueue globalOperationQueue] addOperationWithBlock:^{
+                    NSString *htmlMessage = [msg htmlBody];
+                    htmlMessage = [LAPrefs boolForKey:@"chocklock"] ? [htmlMessage uppercaseString] : htmlMessage;
+                    [htmlMessage retain];
+                    [msg release];
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [[messageWebView mainFrame] loadHTMLString:htmlMessage baseURL:nil];
+                        [htmlMessage release];
+                    }];
+                }];
             }
             else {
                 message = NSLocalizedString(@"This message has not been downloaded from the server yet.", @"This message has not been downloaded from the server yet.");
             }
             
             message = [LAPrefs boolForKey:@"chocklock"] ? [message uppercaseString] : message;
-            
             [[messageWebView mainFrame] loadHTMLString:message baseURL:nil];
         }
     }
