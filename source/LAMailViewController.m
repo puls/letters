@@ -41,12 +41,8 @@
 
 
 - (void)awakeFromNib {
-	
     [mailboxMessageList setDataSource:self];
     [mailboxMessageList setDelegate:self];
-    
-    [foldersList setDataSource:self];
-    [foldersList setDelegate:self];
 }
 
 - (NSURL*) cacheFolderURL {
@@ -90,24 +86,9 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
         
-        // this needs to go somewhere else
-        {
-            NSMutableArray *folders = [NSMutableArray array];
-            
-            NSError *err = nil;
-            
-            self.folders = [[[_server subscribedFolders:&err] mutableCopy] autorelease];
-            
-            if (err) {
-                // do something nice with this.
-                NSLog(@"err: %@", err);
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(),^ {
-                [foldersList reloadData];
-            });
-        }
+		if(![self.folders count]) {
+			[self getFoldersList];
+		}
         
         LBFolder *inbox   = [_server folderWithPath:folder];
         NSSet *messageSet = [inbox messageObjectsFromIndex:1 toIndex:0]; 
@@ -131,6 +112,27 @@
             [workingIndicator stopAnimation:self];
         });
     });
+}
+
+//moved into a separate method; probably still not being called from a great place
+- (void) getFoldersList {
+	NSMutableArray *folders = [NSMutableArray array];
+	
+	NSError *err = nil;
+	
+	self.folders = [[[_server subscribedFolders:&err] mutableCopy] autorelease];
+	
+	self->_folderTree = [self createFolderTreeFromPaths:self.folders];
+	
+	if (err) {
+		// do something nice with this.
+		NSLog(@"err: %@", err);
+		return;
+	}
+	
+	dispatch_async(dispatch_get_main_queue(),^ {
+		[foldersList reloadData];
+	});
 }
 
 - (void) connectToServerAndList {
@@ -162,6 +164,10 @@
         NSLog(@"Could not connect");
     }
     
+	dispatch_async(dispatch_get_main_queue(),^ {
+		[foldersList reloadData];
+	});
+	
     if (err) {
         
         // OH CRAP.
@@ -201,19 +207,6 @@
             [[[messageTextView textStorage] mutableString] setString:message];
         }
     }
-    
-    else if ([notification object] == foldersList) {
-        NSUInteger selectedRow = [foldersList selectedRow];
-        
-        // the real fix here is to not overwrite selected folders.
-        if (selectedRow >= 0 && selectedRow < [_folders count] ) {
-            
-            NSString *folder = [_folders objectAtIndex:selectedRow];
-            [self listFolder:folder];
-        }
-        
-        
-    }
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
@@ -246,6 +239,74 @@
     
     return [LAPrefs boolForKey:@"chocklock"] ? [[msg valueForKeyPath:identifier] uppercaseString] : [msg valueForKeyPath:identifier];
 
+}
+
+//Outline view datasource
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
+	if (item == nil) {
+		return [[self->_folderTree fileWrappers] objectForKey:[[[self->_folderTree fileWrappers] allKeys] objectAtIndex:index]];
+	}
+	return [[item fileWrappers] objectForKey:[[[item fileWrappers] allKeys] objectAtIndex:index]];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
+	if([[item fileWrappers] count] > 0) {
+		return YES;
+	}
+	return NO;
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {	
+	if(item == nil) {
+		return [[self->_folderTree fileWrappers] count];
+	}
+	else {
+		return [[item fileWrappers] count];
+	}
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+	return [item preferredFilename];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item {
+	return NO;
+}
+
+//workaround; selecting a parent directory crashes
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
+	if([[item fileWrappers] count] > 0) {
+		return NO;
+	}
+	return YES;
+}
+
+
+//kind of a misuse of filewrappers but they get the job done
+- (NSFileWrapper*) createFolderTreeFromPaths:(NSArray*) paths {
+	NSFileWrapper* treeBase = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil];
+	for(NSString* path in paths) {
+		NSArray* components = [path pathComponents];
+		NSFileWrapper* here = treeBase;
+		for(NSString* component in components) {
+			if(![[here fileWrappers] objectForKey:component]) {
+				NSFileWrapper* newDir = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil];
+				[newDir setPreferredFilename:component];
+				[newDir setFilename:path];
+				[here addFileWrapper:newDir];
+			}
+			here = [[here fileWrappers] objectForKey:component];
+		}
+	}
+	return treeBase;
+}
+
+- (void) outlineViewSelectionDidChange:(NSNotification *)notification {
+    if ([notification object] == foldersList) {
+        NSUInteger selectedRow = [foldersList selectedRow];
+		[self listFolder:[[foldersList itemAtRow:selectedRow] filename]];
+    }	
 }
 
 // FIXME: put this somewhere where it makes more sense, maybe a utils file?

@@ -8,15 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface LAMailViewController : NSWindowController <NSTableViewDataSource,NSTableViewDelegate> {
+@interface LAMailViewController : NSWindowController <NSOutlineViewDataSource,NSOutlineViewDelegate,NSTableViewDataSource,NSTableViewDelegate> {
     IBOutlet NSTableView *mailboxMessageList;
-    IBOutlet NSTableView *foldersList;
+    IBOutlet NSOutlineView *foldersList;
     IBOutlet NSProgressIndicator *workingIndicator;
     IBOutlet NSTextView *messageTextView;
     
     LBServer *_server;
     NSMutableArray *_messages;
     NSMutableArray *_folders;
+	NSFileWrapper *_folderTree;
     
     NSString *_statusMessage;
 }
@@ -25,9 +26,11 @@
 @property (retain) LBServer *server;
 @property (retain) NSString *statusMessage;
 
-
 + (id) openNewMailViewController;
 
 - (void) connectToServerAndList;
+- (void) getFoldersList;
+
+- (NSFileWrapper*) createFolderTreeFromPaths:(NSArray*) paths;
 
 @end
