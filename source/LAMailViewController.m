@@ -195,11 +195,15 @@
             NSString *message = nil;
             
             if ([msg messageDownloaded]) {
+
                 message = NSLocalizedString(@"Loading message…", @"Loading message…");
                 [msg retain];
                 [[NSOperationQueue globalOperationQueue] addOperationWithBlock:^{
                     NSString *htmlMessage = [msg htmlBody];
                     htmlMessage = [LAPrefs boolForKey:@"chocklock"] ? [htmlMessage uppercaseString] : htmlMessage;
+					if ([htmlMessage length] == 0) {
+						htmlMessage = [NSString stringWithFormat:@"<pre>%@</pre>", [msg body]];
+					}
                     [htmlMessage retain];
                     [msg release];
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
