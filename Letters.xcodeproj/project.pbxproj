@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		A8FCF29A110C0DB200083C76 /* NSOperationQueue+LAUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A8FCF299110C0DB200083C76 /* NSOperationQueue+LAUtils.m */; };
+		A8FCF2E2110C121D00083C76 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FCF2E1110C121D00083C76 /* WebKit.framework */; };
 		CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
 		CC517487110ACDA800C01407 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
@@ -74,6 +75,7 @@
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8FCF298110C0DB200083C76 /* NSOperationQueue+LAUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOperationQueue+LAUtils.h"; path = "source/NSOperationQueue+LAUtils.h"; sourceTree = "<group>"; };
 		A8FCF299110C0DB200083C76 /* NSOperationQueue+LAUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOperationQueue+LAUtils.m"; path = "source/NSOperationQueue+LAUtils.m"; sourceTree = "<group>"; };
+		A8FCF2E1110C121D00083C76 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CC51746B110ACD9200C01407 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC51746F110ACD9900C01407 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC9C527C1107A961008ED850 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -106,6 +108,7 @@
 				CC9C527D1107A961008ED850 /* AddressBook.framework in Frameworks */,
 				CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */,
 				CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */,
+				A8FCF2E2110C121D00083C76 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +118,7 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A8FCF2E1110C121D00083C76 /* WebKit.framework */,
 				CC51746F110ACD9900C01407 /* LetterBox.framework */,
 				CC51746B110ACD9200C01407 /* libetpan.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,

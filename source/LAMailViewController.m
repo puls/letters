@@ -184,7 +184,7 @@
     if ([notification object] == mailboxMessageList) {
         NSInteger selectedRow = [mailboxMessageList selectedRow];
         if (selectedRow < 0) {
-            [[[messageTextView textStorage] mutableString] setString:@"This area intentionally left blank."];
+            [[messageWebView mainFrame] loadHTMLString:@"This area intentionally left blank." baseURL:nil];
         }
         else {
             LBMessage *msg = [_messages objectAtIndex:selectedRow];
@@ -192,7 +192,7 @@
             NSString *message = nil;
             
             if ([msg messageDownloaded]) {
-                message = [msg body];
+                message = [msg htmlBody];
             }
             else {
                 message = NSLocalizedString(@"This message has not been downloaded from the server yet.", @"This message has not been downloaded from the server yet.");
@@ -200,7 +200,7 @@
             
             message = [LAPrefs boolForKey:@"chocklock"] ? [message uppercaseString] : message;
             
-            [[[messageTextView textStorage] mutableString] setString:message];
+            [[messageWebView mainFrame] loadHTMLString:message baseURL:nil];
         }
     }
     

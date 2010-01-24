@@ -7,12 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <WebKit/WebKit.h>
 
 @interface LAMailViewController : NSWindowController <NSTableViewDataSource,NSTableViewDelegate> {
     IBOutlet NSTableView *mailboxMessageList;
     IBOutlet NSTableView *foldersList;
     IBOutlet NSProgressIndicator *workingIndicator;
-    IBOutlet NSTextView *messageTextView;
+    IBOutlet WebView *messageWebView;
     
     LBServer *_server;
     NSMutableArray *_messages;
