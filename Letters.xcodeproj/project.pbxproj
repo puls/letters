@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		A8FCF29A110C0DB200083C76 /* NSOperationQueue+LAUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A8FCF299110C0DB200083C76 /* NSOperationQueue+LAUtils.m */; };
 		CC51746C110ACD9200C01407 /* libetpan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746B110ACD9200C01407 /* libetpan.framework */; };
 		CC517470110ACD9900C01407 /* LetterBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
 		CC517487110ACDA800C01407 /* LetterBox.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC51746F110ACD9900C01407 /* LetterBox.framework */; };
@@ -71,6 +72,8 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D15AC370486D014006FF6A4 /* CrashyEmailApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashyEmailApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8FCF298110C0DB200083C76 /* NSOperationQueue+LAUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOperationQueue+LAUtils.h"; path = "source/NSOperationQueue+LAUtils.h"; sourceTree = "<group>"; };
+		A8FCF299110C0DB200083C76 /* NSOperationQueue+LAUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOperationQueue+LAUtils.m"; path = "source/NSOperationQueue+LAUtils.m"; sourceTree = "<group>"; };
 		CC51746B110ACD9200C01407 /* libetpan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libetpan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC51746F110ACD9900C01407 /* LetterBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LetterBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC9C527C1107A961008ED850 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -162,6 +165,8 @@
 				CCA554531106E1BE00CEEFF4 /* LAMailViewController.m */,
 				CCA554821106EBBC00CEEFF4 /* LAPrefsWindowController.h */,
 				CCA554831106EBBC00CEEFF4 /* LAPrefsWindowController.m */,
+				A8FCF298110C0DB200083C76 /* NSOperationQueue+LAUtils.h */,
+				A8FCF299110C0DB200083C76 /* NSOperationQueue+LAUtils.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 				CCA5544D1106DF4D00CEEFF4 /* LAAppDelegate.m in Sources */,
 				CCA554541106E1BE00CEEFF4 /* LAMailViewController.m in Sources */,
 				CCA554841106EBBC00CEEFF4 /* LAPrefsWindowController.m in Sources */,
+				A8FCF29A110C0DB200083C76 /* NSOperationQueue+LAUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,8 @@
 #import "LAAppDelegate.h"
 #import "LADocument.h"
 
+#import "NSOperationQueue+LAUtils.h"
+
 @implementation LAMailViewController
 @synthesize folders=_folders;
 @synthesize server=_server;
@@ -88,7 +90,7 @@
     NSString *format = NSLocalizedString(@"Finding messages in %@", @"Finding messages in %@");
     [self setStatusMessage:[NSString stringWithFormat:format, folder]];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+    [[NSOperationQueue globalOperationQueue] addOperationWithBlock:^{
         
         // this needs to go somewhere else
         {
@@ -104,33 +106,33 @@
                 return;
             }
             
-            dispatch_async(dispatch_get_main_queue(),^ {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [foldersList reloadData];
-            });
+            }];
         }
         
         LBFolder *inbox   = [_server folderWithPath:folder];
         NSSet *messageSet = [inbox messageObjectsFromIndex:1 toIndex:0]; 
         
-        dispatch_async(dispatch_get_main_queue(),^ {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [_messages removeAllObjects];
             [_messages addObjectsFromArray:[messageSet allObjects]];
             
             [mailboxMessageList reloadData];
             
             [self setStatusMessage:NSLocalizedString(@"Download message bodies", @"Download message bodies")];
-        });
+        }];
         
         
         for (LBMessage *msg in messageSet) {
             [msg body]; // pull down the body. in the background.
         }
         
-        dispatch_async(dispatch_get_main_queue(),^ {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self setStatusMessage:nil];
             [workingIndicator stopAnimation:self];
-        });
-    });
+        }];
+    }];
 }
 
 - (void) connectToServerAndList {

@@ -8,6 +8,8 @@
 #import "LADocument.h"
 #import "LAAppDelegate.h"
 
+#import "NSOperationQueue+LAUtils.h"
+
 @implementation LADocument
 @synthesize statusMessage=_statusMessage;
 @synthesize toList=_toList;
@@ -114,7 +116,7 @@
     [self setStatusMessage:NSLocalizedString(@"Sending message", @"Sending message")];
     [progressIndicator startAnimation:self];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^(void){
+    [[NSOperationQueue globalOperationQueue] addOperationWithBlock:^{
         
         // FIXME: how do we know if it was successful or not?
         
@@ -126,14 +128,14 @@
                                useTLS:YES // fixme, lookup in acct
                               useAuth:YES];
         
-        dispatch_async(dispatch_get_main_queue(),^ {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self setStatusMessage:nil];
             [progressIndicator stopAnimation:self];
             [self close];
-        });
+        }];
         
         [msg release];
-    });
+    }];
 }
 
 @end
