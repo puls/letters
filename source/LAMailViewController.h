@@ -18,13 +18,11 @@
     LBServer *_server;
     NSMutableArray *_messages;
     NSMutableArray *_folders;
-	NSFileWrapper *_folderTree;
+    NSFileWrapper *_folderTree;
     
     NSString *_statusMessage;
 }
 
-@property (retain) NSMutableArray *folders;
-@property (retain) LBServer *server;
 @property (retain) NSString *statusMessage;
 
 + (id) openNewMailViewController;
